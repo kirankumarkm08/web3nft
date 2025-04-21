@@ -14,7 +14,7 @@ const Hero = () => {
     if (address) {
       router.push("/base");
     }
-  }, [address]);
+  }, [, router, address]);
 
   return (
     <main className="flex-1 flex flex-col">
