@@ -12,7 +12,7 @@ import NFTCard, { type NFT } from "@/components/nfts-card";
 import WalletInfo from "@/components/Wallet-Info";
 import { base } from "wagmi/chains";
 import { Button } from "@/components/ui/button";
-import { ConnectButton } from "@rainbow-me/rainbowkit";
+// import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -112,7 +112,7 @@ export default function Dashboard() {
     <main className="container mx-auto py-20 px-4 max-w-6xl">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Base Network NFT Dashboard</h1>
-        <ConnectButton />
+        {/* <ConnectButton /> */}
       </div>
 
       {evmAddress && (
