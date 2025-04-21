@@ -1,16 +1,22 @@
 "use client";
 
-import type { ReactNode } from "react";
 import dynamic from "next/dynamic";
+import { ReactNode } from "react";
+
+// Create a loading fallback component - no children parameter
+const LoadingFallback = () => {
+  return null; // Or return a loading spinner/indicator
+};
 
 // Dynamically import the WalletProvider with SSR disabled
-const WalletProviderNoSSR = dynamic(
-  () => import("@/providers/web3provider").then((mod) => mod.WalletProvider),
+const WalletProviderComponent = dynamic(
+  () => import("./web3provider").then((mod) => mod.WalletProvider),
   {
     ssr: false,
+    loading: LoadingFallback,
   }
 );
 
-export function WalletProviderWrapper({ children }: { children: ReactNode }) {
-  return <WalletProviderNoSSR>{children}</WalletProviderNoSSR>;
+export function DynamicWalletProvider({ children }: { children: ReactNode }) {
+  return <WalletProviderComponent>{children}</WalletProviderComponent>;
 }
