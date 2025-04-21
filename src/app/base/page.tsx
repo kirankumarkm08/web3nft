@@ -51,7 +51,7 @@ export default function Dashboard() {
         `https://api.opensea.io/api/v2/chain/base/account/${testAddress}/nfts?limit=50`,
         {
           headers: {
-            "X-API-KEY": process.env.NEXT_PUBLIC_OPENSEA_API_KEY || "",
+            "X-API-KEY": "1f1aed6a5a574c628b8a7ad5836b77c6",
             Accept: "application/json",
           },
         }
