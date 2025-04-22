@@ -119,7 +119,14 @@ const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <ConnectButton label="Base" />
-              <Button className="px-4 py-5">Cardano</Button>
+              <Button
+                className="px-4 py-5"
+                onClick={() => {
+                  router.push("/cardano");
+                }}
+              >
+                Cardano
+              </Button>
             </div>
           </div>
         </div>
