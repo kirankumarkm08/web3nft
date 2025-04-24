@@ -1,18 +1,11 @@
+import type React from "react";
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { WalletProvider } from "@/providers/web3provider";
 import Navbar from "@/components/Navbar";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import Footer from "@/components/Footer";
+import { MeshProvider, useWallet as useMeshWallet } from "@meshsdk/react";
+import { LaceWalletProvider } from "@/providers/lace-wallet-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,12 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`antialiased`}>
         <WalletProvider>
-          <Navbar />
-          {children}
+          {/* <MeshProvider> */}
+          <LaceWalletProvider>
+            <Navbar />
+            {children}
+            <Footer />
+            {/* </MeshProvider> */}/
+          </LaceWalletProvider>
         </WalletProvider>
       </body>
     </html>

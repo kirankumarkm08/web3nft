@@ -8,11 +8,26 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useAccount, useBalance, useChainId, useDisconnect } from "wagmi";
-import NFTCard, { type NFT } from "@/components/nfts-card";
+import UnifiedNFTCard from "@/components/nfts-card";
 import WalletInfo from "@/components/Wallet-Info";
 import { base } from "wagmi/chains";
 import { Button } from "@/components/ui/button";
 // import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+export type NFT = {
+  asset: string;
+  contract: string;
+  tokenId: string;
+  name: string;
+  description: string;
+  image_url: string | null;
+  collection: string;
+  fingerprint: string;
+  policyId: string;
+  assetName: string;
+  metadata: any;
+  isCardano: true;
+};
 
 export default function Dashboard() {
   const router = useRouter();
@@ -45,10 +60,10 @@ export default function Dashboard() {
     setError(null);
 
     try {
-      // const testAddress = "0x5dadb2e88cf9cc2b6f53b5e7413ebfa1a7d740a1";
+      const testAddress = "0x5dadb2e88cf9cc2b6f53b5e7413ebfa1a7d740a1";
 
       const response = await fetch(
-        `https://api.opensea.io/api/v2/chain/base/account/${evmAddress}/nfts?limit=50`,
+        `https://api.opensea.io/api/v2/chain/base/account/${testAddress}/nfts?limit=50`,
         {
           headers: {
             "X-API-KEY": "1f1aed6a5a574c628b8a7ad5836b77c6",
@@ -168,7 +183,7 @@ export default function Dashboard() {
       ) : baseNfts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {baseNfts.map((nft) => (
-            <NFTCard key={`${nft.contract}:${nft.name}`} nft={nft} />
+            <UnifiedNFTCard key={`${nft.contract}:${nft.name}`} nft={nft} />
           ))}
         </div>
       ) : (

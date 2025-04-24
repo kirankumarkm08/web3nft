@@ -1,20 +1,46 @@
 "use client";
 
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { useAccount } from "wagmi";
-import { Button } from "./ui/button";
+import { LaceWalletButton } from "@/components/lace-wallet-button";
+import { useLaceWallet } from "@/providers/lace-wallet-provider";
+// import ConnectWalletButton from "@/components/Cardano-wallet-connect";
 
 const Hero = () => {
   const router = useRouter();
-  const { address } = useAccount();
+  const [isClient, setIsClient] = useState(false);
+
+  // Base/EVM wallet connection
+  const { address: baseAddress, isConnected: isEvmConnected } = useAccount();
+
+  // Cardano wallet connection
+  const { connected: cardanoConnected } = useLaceWallet();
 
   useEffect(() => {
-    if (address) {
+    setIsClient(true);
+
+    // Log wallet connection status for debugging
+    console.log("Hero component wallet status:", {
+      evmConnected: isEvmConnected,
+      baseAddress: baseAddress,
+      cardanoConnected: cardanoConnected,
+    });
+  }, [isEvmConnected, baseAddress, cardanoConnected]);
+
+  useEffect(() => {
+    if (!isClient) return;
+
+    // Navigate based on which wallet is connected
+    if (isEvmConnected && baseAddress) {
+      console.log("EVM wallet connected, navigating to /base");
       router.push("/base");
+    } else if (cardanoConnected) {
+      console.log("Lace wallet connected, navigating to /cardano");
+      router.push("/cardano"); // Navigate to Cardano dashboard
     }
-  }, [, router, address]);
+  }, [baseAddress, isEvmConnected, cardanoConnected, router, isClient]);
 
   return (
     <main className="flex-1 flex flex-col">
@@ -117,17 +143,23 @@ const Hero = () => {
               Caesar&apos;s Palace in Las Vegas, NV.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <ConnectButton label="Base" />
-              <Button
-                className="px-4 py-5"
-                onClick={() => {
-                  router.push("/cardano");
-                }}
-              >
-                Cardano
-              </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+              <div className="flex flex-col items-center">
+                <ConnectButton label="Base" />
+              </div>
+
+              <div className="flex flex-col items-center">
+                <LaceWalletButton />
+              </div>
             </div>
+
+            {isClient && (isEvmConnected || cardanoConnected) && (
+              <div className="mt-6 animate-pulse">
+                <p className="text-emerald-400">
+                  Wallet connected! Redirecting...
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </section>
